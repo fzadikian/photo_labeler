@@ -7,7 +7,7 @@ void main(List<String> args) async {
     exit(1);
   }
 
-  final magick = Platform.isWindows ? 'magick.exe' : 'magick';
+  final magick = defaultMagickExecutable;
 
   final outputDir = args[0];
   final files     = args.sublist(1);

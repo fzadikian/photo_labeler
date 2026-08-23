@@ -1,6 +1,23 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:exif/exif.dart';
 import 'package:path/path.dart' as p;
+import 'src/magick_bundle.dart';
+
+String get defaultMagickExecutable {
+  if (Platform.isWindows) {
+    final tempDir    = Directory(p.join(Directory.systemTemp.path, 'photo_labeler'));
+    final tempMagick = File(p.join(tempDir.path, 'magick.exe'));
+    if (tempMagick.existsSync() && tempMagick.lengthSync() > 0) {
+      return tempMagick.path;
+    }
+    tempDir.createSync(recursive: true);
+    final bytes = gzip.decode(base64Decode(bundledMagickGzipBase64));
+    tempMagick.writeAsBytesSync(bytes);
+    return tempMagick.path;
+  }
+  return 'magick';
+}
 
 String frac(String val) {
   final parts = val.split('/');

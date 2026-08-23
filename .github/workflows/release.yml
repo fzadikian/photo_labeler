@@ -25,15 +25,14 @@ jobs:
           name: photo_labeler-windows
           path: photo_labeler-windows
 
-      - name: Zip artifacts
+      - name: Prepare release binaries
         run: |
-          zip -j "photo_labeler-linux-x64-${{ github.ref_name }}.zip" photo_labeler-linux/*
-          zip -j "photo_labeler-windows-x64-${{ github.ref_name }}.zip" photo_labeler-windows/*
+          mv photo_labeler-linux/photo_labeler "photo_labeler-linux-x64-${{ github.ref_name }}"
+          mv photo_labeler-windows/photo_labeler.exe "photo_labeler-windows-x64-${{ github.ref_name }}.exe"
 
       - name: Create release
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            photo_labeler-linux-x64-${{ github.ref_name }}.zip
-            photo_labeler-windows-x64-${{ github.ref_name }}.zip
-
+            photo_labeler-linux-x64-${{ github.ref_name }}
+            photo_labeler-windows-x64-${{ github.ref_name }}.exe

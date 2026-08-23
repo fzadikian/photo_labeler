@@ -20,7 +20,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: photo_labeler-linux
-          path: build/
+          path: build/photo_labeler
 
   windows:
     runs-on: windows-latest
@@ -29,24 +29,13 @@ jobs:
 
       - uses: dart-lang/setup-dart@v1
 
-      - name: Install 7-Zip
-        run: choco install 7zip -y
-
-      - name: Create build directory
-        run: mkdir build
-
-      - name: Download ImageMagick
-        run: |
-          curl -L https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-29/ImageMagick-7.1.2-29-portable-Q16-x64.7z -o magick.7z
-          7z e magick.7z magick.exe -obuild
-          del magick.7z
+      - name: Install 7-Zip and make
+        run: choco install 7zip make -y
 
       - name: Build
-        run: |
-          dart pub get
-          dart compile exe bin/photo_labeler.dart -o build/photo_labeler.exe
+        run: make windows
 
       - uses: actions/upload-artifact@v7
         with:
           name: photo_labeler-windows
-          path: build/
+          path: build/photo_labeler.exe

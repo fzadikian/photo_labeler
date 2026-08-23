@@ -27,10 +27,10 @@ The binary will be at `build/photo_labeler`.
 
 ### Windows
 
-Requires `curl` and `7-Zip` on PATH. Downloads the portable ImageMagick binary automatically.
+Requires `curl` and `7-Zip` on PATH. Downloads the portable `imagemagick` binary automatically.
 
 ```bash
 make windows
 ```
 
-The binary will be at `build/photo_labeler.exe`, with `magick.exe` alongside it.
+The standalone binary will be at `build/photo_labeler.exe` with `imagemagick` embedded.

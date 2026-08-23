@@ -1,1 +1,3 @@
 build/
+lib/src/magick_bundle.dart
+.dart_tool/
