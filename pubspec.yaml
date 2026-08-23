@@ -1,0 +1,10 @@
+name: photo_labeler
+description: Overlay EXIF metadata onto photos.
+version: 1.0.0
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  exif: ^3.4.0
+  path: ^1.9.0
