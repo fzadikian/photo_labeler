@@ -1,15 +1,25 @@
 # photo_labeler
 
 Overlays EXIF metadata (camera model, shutter speed, aperture, ISO, focal length) onto photos as a label in the bottom-right corner.  
-Requires `imagemagick` (bundled in Windows build).
+On Linux, `imagemagick` and `zenity` are required.
 
 ## Usage
 
+### UI
+
+Run without arguments (or double-click the binary):
+
+```bash
+photo_labeler
 ```
+
+### Command Line
+
+```bash
 photo_labeler <output_dir> <image> [image ...]
 ```
 
-```
+```bash
 photo_labeler ./labeled photo1.jpg photo2.jpg photo3.png
 ```
 
@@ -33,4 +43,4 @@ Requires `curl` and `7-Zip` on PATH. Downloads the portable `imagemagick` binary
 make windows
 ```
 
-The standalone binary will be at `build/photo_labeler.exe` with `imagemagick` embedded.
+The standalone binary will be at `build/photo_labeler.exe` with `imagemagick` and `zenity` embedded.

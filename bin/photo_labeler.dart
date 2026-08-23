@@ -1,22 +1,16 @@
-import 'dart:io';
-import 'package:photo_labeler/photo_labeler.dart';
+import 'package:photo_labeler/cli.dart';
+import 'package:photo_labeler/zenity.dart';
 
 void main(List<String> args) async {
-  if (args.length < 2) {
+  if (args.contains('-h') || args.contains('--help') || args.length == 1) {
     print('Usage: photo_labeler <output_dir> <image> [image ...]');
-    exit(1);
+    print('       photo_labeler (runs UI)');
+    return;
   }
 
-  final magick = defaultMagickExecutable;
-
-  final outputDir = args[0];
-  final files     = args.sublist(1);
-  Directory(outputDir).createSync(recursive: true);
-
-  for (var i = 0; i < files.length; i++) {
-    print('Processing ${files[i]} (${i + 1}/${files.length})');
-    await overlayMetadata(magick, files[i], outputDir);
+  if (args.length >= 2) {
+    await runCli(args);
+  } else {
+    await runZenity();
   }
-
-  print('Done! ${files.length} image(s) labeled.');
 }
