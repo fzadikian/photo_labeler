@@ -7,4 +7,5 @@ environment:
 
 dependencies:
   exif: ^3.3.0
+  mime: ^2.0.0
   path: ^1.9.1

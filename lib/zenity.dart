@@ -35,7 +35,7 @@ Future<List<String>?> selectFiles() async {
   final list = output
       .split('|')
       .map((s) => s.trim())
-      .where((s) => s.isNotEmpty)
+      .where((s) => s.isNotEmpty && isImage(s))
       .toList();
   return list.isNotEmpty ? list : null;
 }
@@ -45,6 +45,14 @@ Future<void> showCompletionDialog(int count) async {
     '--info',
     '--title=Photo Labeler',
     '--text=Done! $count image(s) labeled.',
+  ]);
+}
+
+Future<void> showErrorDialog(String message) async {
+  await Process.run(zenityExe, [
+    '--error',
+    '--title=Photo Labeler',
+    '--text=$message',
   ]);
 }
 
@@ -81,10 +89,16 @@ Future<void> processWithProgress(List<String> files, String outputDir) async {
 
 Future<void> runZenity() async {
   final outputDir = await selectDirectory();
-  if (outputDir == null) return;
+  if (outputDir == null) {
+    await showErrorDialog('No output directory selected.');
+    return;
+  }
 
   final files = await selectFiles();
-  if (files == null || files.isEmpty) return;
+  if (files == null || files.isEmpty) {
+    await showErrorDialog('No valid images selected.');
+    return;
+  }
 
   Directory(outputDir).createSync(recursive: true);
   await processWithProgress(files, outputDir);

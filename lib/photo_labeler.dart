@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:exif/exif.dart';
+import 'package:mime/mime.dart';
 import 'package:path/path.dart' as p;
 import 'src/bundle.dart';
 import 'src/extractor.dart';
@@ -9,6 +10,11 @@ String get magickExe {
     return extractBundledBinary('magick.exe', bundledMagickGzipBase64);
   }
   return 'magick';
+}
+
+bool isImage(String path) {
+  final mime = lookupMimeType(path);
+  return mime != null && mime.startsWith('image/');
 }
 
 String frac(String val) {
