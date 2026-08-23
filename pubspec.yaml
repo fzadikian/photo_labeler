@@ -1,6 +1,6 @@
 name: photo_labeler
 description: Overlay EXIF metadata onto photos.
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
