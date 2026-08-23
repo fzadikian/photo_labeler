@@ -1,11 +1,10 @@
 name: Build
 
 on:
+  workflow_call:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
 
 jobs:
   linux:
@@ -45,38 +44,9 @@ jobs:
       - name: Build
         run: |
           dart pub get
-          dart compile exe src/photo_labeler.dart -o build/photo_labeler.exe
+          dart compile exe bin/photo_labeler.dart -o build/photo_labeler.exe
 
       - uses: actions/upload-artifact@v7
         with:
           name: photo_labeler-windows
           path: build/
-
-  release:
-    needs: [linux, windows]
-    if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v7
-        with:
-          name: photo_labeler-linux
-          path: photo_labeler-linux
-
-      - uses: actions/download-artifact@v7
-        with:
-          name: photo_labeler-windows
-          path: photo_labeler-windows
-
-      - name: Zip artifacts
-        run: |
-          zip -j "photo_labeler-linux-x64-${{ github.ref_name }}.zip" photo_labeler-linux/*
-          zip -j "photo_labeler-windows-x64-${{ github.ref_name }}.zip" photo_labeler-windows/*
-
-      - name: Create release
-        uses: softprops/action-gh-release@v3
-        with:
-          files: |
-            photo_labeler-linux-x64-${{ github.ref_name }}.zip
-            photo_labeler-windows-x64-${{ github.ref_name }}.zip

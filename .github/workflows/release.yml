@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: photo_labeler-linux
+          path: photo_labeler-linux
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: photo_labeler-windows
+          path: photo_labeler-windows
+
+      - name: Zip artifacts
+        run: |
+          zip -j "photo_labeler-linux-x64-${{ github.ref_name }}.zip" photo_labeler-linux/*
+          zip -j "photo_labeler-windows-x64-${{ github.ref_name }}.zip" photo_labeler-windows/*
+
+      - name: Create release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            photo_labeler-linux-x64-${{ github.ref_name }}.zip
+            photo_labeler-windows-x64-${{ github.ref_name }}.zip
+

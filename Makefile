@@ -7,7 +7,7 @@ all: linux
 linux:
 	mkdir build
 	dart pub get
-	dart compile exe src/photo_labeler.dart -o build/photo_labeler
+	dart compile exe bin/photo_labeler.dart -o build/photo_labeler
 
 windows:
 	mkdir build
@@ -17,7 +17,7 @@ windows:
 	rm magick.7z
 
 	dart pub get
-	dart compile exe src/photo_labeler.dart -o build/photo_labeler.exe
+	dart compile exe bin/photo_labeler.dart -o build/photo_labeler.exe
 
 clean:
 	rm -rf build magick.7z
