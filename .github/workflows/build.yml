@@ -71,12 +71,12 @@ jobs:
 
       - name: Zip artifacts
         run: |
-          zip -j photo_labeler-linux-x64.zip photo_labeler-linux/*
-          zip -j photo_labeler-windows-x64.zip photo_labeler-windows/*
+          zip -j "photo_labeler-linux-x64-${{ github.ref_name }}.zip" photo_labeler-linux/*
+          zip -j "photo_labeler-windows-x64-${{ github.ref_name }}.zip" photo_labeler-windows/*
 
       - name: Create release
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            photo_labeler-linux-x64.zip
-            photo_labeler-windows-x64.zip
+            photo_labeler-linux-x64-${{ github.ref_name }}.zip
+            photo_labeler-windows-x64-${{ github.ref_name }}.zip
