@@ -69,5 +69,5 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            photo_labeler
-            photo_labeler.exe
+            photo_labeler-linux/*
+            photo_labeler-windows/*
