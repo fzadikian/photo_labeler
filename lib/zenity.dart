@@ -46,6 +46,8 @@ Future<void> showCompletionDialog(int count) async {
     '--title=Photo Labeler',
     '--text=Done! $count image(s) labeled.',
   ]);
+
+  print('Done! $count image(s) labeled.');
 }
 
 Future<void> showErrorDialog(String message) async {
@@ -68,22 +70,21 @@ Future<void> processWithProgress(List<String> files, String outputDir) async {
   for (var i = 0; i < files.length; i++) {
     final name = p.basename(files[i]);
 
-    print('Processing ${files[i]} (${i + 1}/${files.length})');
+    print('Processing ${files[i]} (${i}/${files.length} completed)...');
 
-    progress.stdin.writeln('# Processing $name (${i + 1}/${files.length})...');
+    progress.stdin.writeln('# Processing $name (${i}/${files.length} completed)...');
     await progress.stdin.flush();
 
     await overlayMetadata(files[i], outputDir);
 
     final pct = (((i + 1) / files.length) * 100).toInt();
     progress.stdin.writeln('$pct');
+    progress.stdin.writeln('# Processed $name (${i + 1}/${files.length} completed)...');
     await progress.stdin.flush();
   }
 
   await progress.stdin.close();
   await progress.exitCode;
-
-  print('Done! ${files.length} image(s) labeled.');
 }
 
 Future<void> runZenity() async {
