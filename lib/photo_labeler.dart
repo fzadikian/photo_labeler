@@ -12,9 +12,18 @@ String get magickExe {
   return 'magick';
 }
 
-bool isImage(String path) {
+const supportedMimeTypes = {
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/tiff',
+  'image/heic',
+  'image/heif',
+};
+
+bool isSupportedImage(String path) {
   final mime = lookupMimeType(path);
-  return mime != null && mime.startsWith('image/');
+  return mime != null && supportedMimeTypes.contains(mime);
 }
 
 String frac(String val) {

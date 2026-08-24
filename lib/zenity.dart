@@ -27,7 +27,7 @@ Future<List<String>?> selectFiles() async {
     '--multiple',
     '--separator=|',
     '--title=Select Images to Label',
-    '--file-filter=Images | *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG',
+    '--file-filter=Supported Images | *.jpg *.jpeg *.png *.webp *.tif *.tiff *.heic *.heif *.JPG *.JPEG *.PNG *.WEBP *.TIF *.TIFF *.HEIC *.HEIF',
     '--file-filter=All files | *',
   ]);
   final output = res.stdout.toString().trim();
@@ -35,7 +35,7 @@ Future<List<String>?> selectFiles() async {
   final list = output
       .split('|')
       .map((s) => s.trim())
-      .where((s) => s.isNotEmpty && isImage(s))
+      .where((s) => s.isNotEmpty && isSupportedImage(s))
       .toList();
   return list.isNotEmpty ? list : null;
 }
@@ -91,7 +91,7 @@ Future<void> runZenity() async {
 
   final files = await selectFiles();
   if (files == null || files.isEmpty) {
-    await showErrorDialog('No valid images selected.');
+    await showErrorDialog('No valid images selected (supported: TIFF, JPEG, HEIC, PNG, WebP).');
     return;
   }
 

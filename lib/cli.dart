@@ -3,9 +3,9 @@ import 'photo_labeler.dart';
 
 Future<void> runCli(List<String> args) async {
   final outputDir = args[0];
-  final files = args.sublist(1).where(isImage).toList();
+  final files = args.sublist(1).where(isSupportedImage).toList();
   if (files.isEmpty) {
-    print('Error: No valid image files provided.');
+    print('Error: No valid image files provided (supported: TIFF, JPEG, HEIC, PNG, WebP).');
     exit(1);
   }
 
