@@ -40,16 +40,6 @@ Future<List<String>?> selectFiles() async {
   return list.isNotEmpty ? list : null;
 }
 
-Future<void> showCompletionDialog(int count) async {
-  await Process.run(zenityExe, [
-    '--info',
-    '--title=Photo Labeler',
-    '--text=Done! $count image(s) labeled.',
-  ]);
-
-  print('Done! $count image(s) labeled.');
-}
-
 Future<void> showErrorDialog(String message) async {
   await Process.run(zenityExe, [
     '--error',
@@ -64,16 +54,16 @@ Future<void> processWithProgress(List<String> files, String outputDir) async {
     '--title=Photo Labeler',
     '--text=Starting...',
     '--percentage=0',
-    '--auto-close',
+    '--no-cancel',
   ]);
 
   for (var i = 0; i < files.length; i++) {
     final name = p.basename(files[i]);
 
-    print('Processing ${files[i]} (${i}/${files.length} completed)...');
-
     progress.stdin.writeln('# Processing $name (${i}/${files.length} completed)...');
     await progress.stdin.flush();
+
+    print('Processing ${files[i]} (${i}/${files.length} completed)...');
 
     await overlayMetadata(files[i], outputDir);
 
@@ -82,6 +72,11 @@ Future<void> processWithProgress(List<String> files, String outputDir) async {
     progress.stdin.writeln('# Processed $name (${i + 1}/${files.length} completed)...');
     await progress.stdin.flush();
   }
+
+  progress.stdin.writeln('# Done! ${files.length}/${files.length} images labeled.');
+  await progress.stdin.flush();
+
+  print('Done! ${files.length} image(s) labeled.');
 
   await progress.stdin.close();
   await progress.exitCode;
@@ -102,5 +97,4 @@ Future<void> runZenity() async {
 
   Directory(outputDir).createSync(recursive: true);
   await processWithProgress(files, outputDir);
-  await showCompletionDialog(files.length);
 }
