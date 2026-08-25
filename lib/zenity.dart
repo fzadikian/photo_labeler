@@ -63,20 +63,15 @@ Future<void> processWithProgress(List<String> files, String outputDir) async {
     progress.stdin.writeln('# Processing $name (${i}/${files.length} completed)...');
     await progress.stdin.flush();
 
-    print('Processing ${files[i]} (${i}/${files.length} completed)...');
-
     await overlayMetadata(files[i], outputDir);
 
     final pct = (((i + 1) / files.length) * 100).toInt();
     progress.stdin.writeln('$pct');
-    progress.stdin.writeln('# Processed $name (${i + 1}/${files.length} completed)...');
     await progress.stdin.flush();
   }
 
   progress.stdin.writeln('# Done! ${files.length}/${files.length} images labeled.');
   await progress.stdin.flush();
-
-  print('Done! ${files.length} image(s) labeled.');
 
   await progress.stdin.close();
   await progress.exitCode;
